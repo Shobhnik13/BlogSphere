@@ -10,6 +10,23 @@ const app = new Hono<{
   }
 }>()
 
+//middleware to check user authorisation
+app.use('/api/v1/blog/*',async(c,next)=>{
+  const headers=c.req.header('authorization') || ""
+  // now we have the headers extracted as authorization
+  // we just need the jwt token from the bearer token present in headers extraction
+  // Bearer huy38748rh38ry3893ry3 ->splitting token in 2 parts based on the space between ["bearer","hdjsidh8378937"] -> extracting the 1 index of splitted token "hdjshdjsd7878"
+  const token=headers.split(' ')[1]
+  const isVerified=await verify(token,c.env.JWT_SECRET)
+  if(isVerified.id){
+    next()
+  }else{
+    c.status(403)
+    c.json({error:'unauthorized'})
+  }
+})
+
+
 app.post('/api/v1/signup', async(c) => {
   const prisma=new PrismaClient({
     datasourceUrl:c.env.DATABASE_URL,
