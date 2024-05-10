@@ -1,0 +1,9 @@
+import { Hono } from "hono";
+
+export const blogRouter=new Hono<{
+    Bindings:{
+        DATABASE_URL:string,
+        JWT_SECRET:string,
+    }
+}>()
+const JWT_SECRET="chalajabhosdike"

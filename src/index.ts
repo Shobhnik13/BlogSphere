@@ -2,6 +2,8 @@ import { Hono } from 'hono'
 import { PrismaClient } from '@prisma/client/edge'
 import { withAccelerate } from '@prisma/extension-accelerate'
 import { decode, sign, verify } from 'hono/jwt'
+import { userRouter } from './routes/userRouter'
+import { blogRouter } from './routes/blogRouter'
 
 const app = new Hono<{
   Bindings:{
@@ -9,6 +11,7 @@ const app = new Hono<{
     JWT_SECRET:string
   }
 }>()
+const JWT_SECRET="chalajabhosdike"
 
 //middleware to check user authorisation
 app.use('/api/v1/blog/*',async(c,next)=>{
@@ -17,7 +20,7 @@ app.use('/api/v1/blog/*',async(c,next)=>{
   // we just need the jwt token from the bearer token present in headers extraction
   // Bearer huy38748rh38ry3893ry3 ->splitting token in 2 parts based on the space between ["bearer","hdjsidh8378937"] -> extracting the 1 index of splitted token "hdjshdjsd7878"
   const token=headers.split(' ')[1]
-  const isVerified=await verify(token,c.env.JWT_SECRET)
+  const isVerified=await verify(token,JWT_SECRET)
   if(isVerified.id){
     next()
   }else{
@@ -26,66 +29,14 @@ app.use('/api/v1/blog/*',async(c,next)=>{
   }
 })
 
-
-app.post('/api/v1/signup', async(c) => {
-  const prisma=new PrismaClient({
-    datasourceUrl:c.env.DATABASE_URL,
-  }).$extends(withAccelerate())  
-
-  const body=await c.req.json() 
-
-  try{
-    const userExsits=await prisma.user.findUnique({
-      where:{
-        email:body.email
-      }
-    })
-  
-    if(userExsits){
-      c.status(403)
-      return c.json({error:'user already exists'})
-    }
-
-    const user = await prisma.user.create({
-      data: {
-         email: body.email,
-         password: body.password,
-      },
-   });
-   const token= await sign({id: user.id},c.env.JWT_SECRET)
-   return c.json({token})
-  }catch(e){
-    c.status(403)
-    return c.json({error:'Error while signing up!'})
-  }
-
-})
+// all api routing
+app.route('/api/v1/users',userRouter)
+app.route('/api/v1/blogs',blogRouter)
 
 
-app.post('/api/v1/signin',async(c)=>{
-  const prisma=new PrismaClient({
-    datasourceUrl:c.env.DATABASE_URL
-  }).$extends(withAccelerate())
-
-  const body=await c.req.json()
-
-  const user=await prisma.user.findUnique({
-    where:{
-      email:body.email
-    }
-  })
-
-  if(!user){
-    c.status(403)
-    return c.json({error:'user not found'})
-  }
-  const jwt=await sign({id: user.id},c.env.JWT_SECRET)
-  return c.json({jwt})
-
-})
-
+// test route
 app.get('/test', (c) => {
-  return c.text('Hello Hono2!')
+  return c.text('Hello world!')
 })
 
 
