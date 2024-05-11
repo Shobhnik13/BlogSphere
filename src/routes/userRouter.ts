@@ -9,7 +9,7 @@ export const userRouter=new Hono<{
         JWT_SECRET:string
     }
 }>()
-const JWT_SECRET="chalajabhosdike"
+const JWT_SECRET="hahahahahahahahahahahahah"
 userRouter.post('/signup', async(c) => {
     const prisma=new PrismaClient({
       datasourceUrl:c.env.DATABASE_URL,
