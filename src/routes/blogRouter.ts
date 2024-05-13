@@ -12,14 +12,13 @@ export const blogRouter=new Hono<{
         userId:string,
     }
 }>()
-const JWT_SECRET="hahahahahahahahahahahahah"
 
 //middleware for authorised user
 blogRouter.use('/*',async(c,next)=>{
     const authHeader = c.req.header("authorization") || "";
     const token= authHeader.split(' ')[1]
     try {
-        const user = await verify(token, JWT_SECRET);
+        const user = await verify(token, c.env.JWT_SECRET);
         if (user) {
             c.set("userId", user.id);
             await next();

@@ -9,7 +9,6 @@ export const userRouter=new Hono<{
         JWT_SECRET:string
     }
 }>()
-const JWT_SECRET="hahahahahahahahahahahahah"
 
 userRouter.post('/signup', async(c) => {
     const prisma=new PrismaClient({
@@ -36,7 +35,7 @@ userRouter.post('/signup', async(c) => {
            password: body.password,
         },
      });
-     const token= await sign({id: user.id},JWT_SECRET)
+     const token= await sign({id: user.id},c.env.JWT_SECRET)
      return c.json({token})
     }catch(e){
       c.status(403)
@@ -63,7 +62,7 @@ userRouter.post('/signup', async(c) => {
       c.status(403)
       return c.json({error:'user not found'})
     }
-    const jwt=await sign({id: user.id},JWT_SECRET)
+    const jwt=await sign({id: user.id},c.env.JWT_SECRET)
     return c.json({jwt})
   
   })
