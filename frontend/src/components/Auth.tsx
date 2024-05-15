@@ -1,7 +1,8 @@
-import { Link } from "react-router-dom"
+import { Link, useNavigate } from "react-router-dom"
 import LabelledInp from "./LabelledInp"
 import { useState } from "react"
 import { SignupInput } from "@shobhnik13/zod_types"
+import axios from "axios"
 
 interface authProps{
     type:string
@@ -13,7 +14,18 @@ const Auth = ({type}:authProps) => {
         password:"",
         name:"",
     })
-    console.log(postInp);
+    const navigate=useNavigate()
+    const sendRequest=async()=>{
+        try{
+            const res = await axios.post('https://news-app.shobhnikw.workers.dev/api/v1/users/signup',postInp)
+            const jwt=res.data
+            localStorage.setItem("token",jwt)
+            navigate('/blogs')
+        }catch(e){
+            console.log('error');
+        }
+    }
+    // console.log(postInp);
     
   return (
     <div className="flex justify-center flex-col h-screen">
@@ -41,7 +53,7 @@ const Auth = ({type}:authProps) => {
                 ...postInp,
                 password:e.target.value
             })}}/>
-            <button type="button" className="text-white bg-gray-900 hover:bg-gray-700 focus:ring-4 focus:ring-gray-100 font-medium rounded-lg text-md w-full px-5 py-3 mt-4 mb-4">Sign up</button>
+            <button onClick={sendRequest} type="button" className="text-white bg-gray-900 hover:bg-gray-700 focus:ring-4 focus:ring-gray-100 font-medium rounded-lg text-md w-full px-5 py-3 mt-4 mb-4">Sign up</button>
             </div>
             </div>
         </div>
