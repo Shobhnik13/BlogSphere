@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom"
 import Avatar from "./Avatar"
 
 interface BlogCardProps{
@@ -5,12 +6,14 @@ interface BlogCardProps{
     content:string,
     authorName:string,
     publishedDate:string,
+    id:string,
 }
 
 
-const BlogCard = ({title,content,authorName,publishedDate}:BlogCardProps) => {
+const BlogCard = ({title,content,authorName,publishedDate,id}:BlogCardProps) => {
   return (
-    <div className="border-b border-slate-200 pb-4 p-4">
+    <Link to={`/blog/${id}`}>
+    <div className="border-b border-slate-200 pb-4 p-4 cursor-pointer w-screen max-w-screen-md">
         <div className="flex items-center">
             <div className="flex justify-center flex-col">
                 <Avatar name={authorName} />
@@ -23,6 +26,7 @@ const BlogCard = ({title,content,authorName,publishedDate}:BlogCardProps) => {
 
         <div className="text-md font-thin pt-2">{content.slice(0,100) + "..."}</div>
     </div>
+    </Link>
   )
 }
 
