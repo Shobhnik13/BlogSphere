@@ -21,23 +21,23 @@ const Blogs = () => {
     
   return (
     <div className="overflow-x-hidden">
-      <Navbar/>
-      <div className="flex justify-center">
-        <div className="">
-          {blogs.map((blog)=>{
-            return(
-              <BlogCard
-              id={blog.id}
-              authorName={blog.author.name || "Anonymous"}
-              title={blog.title}
-              content={blog.content}
-              publishedDate="12-12-12"/>
-            )
-          })}
+    <Navbar />
+    <div className="w-screen flex items-center justify-center">
+        <div className="flex flex-col w-full md:max-w-6xl">
+            {blogs.map((blog, index) => (
+                <BlogCard
+                    key={blog.id ?? index} // Ensure blog.id is not undefined
+                    id={blog.id ?? 0} // Assuming id is a number, replace 0 with a suitable default value if needed
+                    authorName={blog.author?.name ?? "Unknown"} // Use optional chaining to avoid null/undefined error
+                    title={blog.title ?? "Untitled"} // Use default value if title is undefined
+                    publishedDate="Mar 12, 2024" // Assuming this is a static value for now
+                    content={blog.content ?? ""} // Use default value if content is undefined
+                />
+            ))}
         </div>
-      </div>
-  </div>
-  )
+    </div>
+</div>
+);
 }
 
 export default Blogs

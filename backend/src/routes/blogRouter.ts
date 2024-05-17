@@ -14,38 +14,26 @@ export const blogRouter=new Hono<{
     }
 }>()
 
-//middleware for authorised user
-// blogRouter.use('/*',async(c,next)=>{
-//     const authHeader = c.req.header("authorization") || "";
-//     const token= authHeader.split(' ')[1]
-//     try {
-//         const user = await verify(token, c.env.JWT_SECRET);
-//         if (user) {
-//             c.set("userId", user.id);
-//             await next();
-//         } else {
-//             c.status(403);
-//             return c.json({
-//                 message: "You are not logged in"
-//             })
-//         }
-//     } catch(e) {
-//         c.status(403);
-//         return c.json({
-//             message: "You are not logged in"
-//         })
-//     }
-// })
+// middleware for authorised user
+blogRouter.use('/*',async(c,next)=>{
+    const authHeader = c.req.header('authorization')||"";
+  const user = await verify(authHeader, c.env.JWT_SECRET)
+  if(user){
+    c.set("userId",user.id)
+  }
+  else{
+    c.status(403);
+    return c.json({
+      msg:"You are not logged in"
+    })
+  }
+  await next();
+})
 
 
 // create blog post 
 blogRouter.post('/create', async(c)=>{
     const body= await c.req.json()
-    const { success }=createBlogInput.safeParse(body)
-    if(!success){
-        c.status(411)
-        return c.json({message:"Incorrect inputs!"})
-    }
     const authorId=c.get('userId')
     const prisma= new PrismaClient({
         datasourceUrl:c.env.DATABASE_URL,

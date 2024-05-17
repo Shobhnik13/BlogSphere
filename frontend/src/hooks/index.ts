@@ -1,7 +1,7 @@
 import axios from "axios"
 import { useEffect, useState } from "react"
 
-interface Blog{
+export interface Blog{
     "content":string,
     "title":string,
     "id":string,

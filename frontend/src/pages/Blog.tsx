@@ -1,6 +1,10 @@
 import { useParams } from "react-router-dom"
 import { useBlog } from "../hooks"
 import SingleBlog from "../components/SingleBlog"
+import Navbar from "../components/Navbar"
+
+
+
 
 const Blog = () => {
   const { id }=useParams()
@@ -8,10 +12,12 @@ const Blog = () => {
   if(loading){
     return <div>Loading...</div>
   }
-  console.log(blog);
+  // console.log(blog);
   
   return (
-    <div><SingleBlog/></div>
+    <div>
+        <SingleBlog blog={blog || ""}/>
+    </div>
   )
 }
 

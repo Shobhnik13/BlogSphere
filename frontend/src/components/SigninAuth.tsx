@@ -18,8 +18,8 @@ const SigninAuth = ({type}:SigninAuthProps) => {
     const sendRequest=async()=>{
         try{
             const res = await axios.post('https://news-app.shobhnikw.workers.dev/api/v1/users/signin',postInp)
-            const jwt=res.data
-            localStorage.setItem("token",jwt)
+            const jwtToken=res.data.jwt
+            localStorage.setItem("token",jwtToken)
             navigate('/blogs')
         }catch(e){
             console.log('error');

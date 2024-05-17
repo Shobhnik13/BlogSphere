@@ -18,7 +18,9 @@ const Auth = ({type}:authProps) => {
     const sendRequest=async()=>{
         try{
             const res = await axios.post('https://news-app.shobhnikw.workers.dev/api/v1/users/signup',postInp)
-            const jwt=res.data
+            const jwt=res.data.token
+            // console.log(jwt);
+            
             localStorage.setItem("token",jwt)
             navigate('/blogs')
         }catch(e){
