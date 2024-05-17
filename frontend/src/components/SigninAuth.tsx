@@ -5,11 +5,9 @@ import { SigninInput } from "@shobhnik13/zod_types"
 import axios from "axios"
 
 
-interface SigninAuthProps{
-    type:string
-}
 
-const SigninAuth = ({type}:SigninAuthProps) => {
+
+const SigninAuth = () => {
     const [postInp,setpPostInp]=useState<SigninInput>({
         email:"",
         password:""

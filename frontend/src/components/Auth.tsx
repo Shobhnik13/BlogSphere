@@ -4,11 +4,9 @@ import { useState } from "react"
 import { SignupInput } from "@shobhnik13/zod_types"
 import axios from "axios"
 
-interface authProps{
-    type:string
-}
 
-const Auth = ({type}:authProps) => {
+
+const Auth = () => {
     const [postInp,setpPostInp]=useState<SignupInput>({
         email:"",
         password:"",

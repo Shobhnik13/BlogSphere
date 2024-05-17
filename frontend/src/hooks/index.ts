@@ -24,7 +24,7 @@ export const useBlog=({id}:{id:string})=>{
             setLoading(false)
         }
         fetchBlogById()
-    },[])
+    },[id])
     return{
         loading,
         blog

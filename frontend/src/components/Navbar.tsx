@@ -5,7 +5,7 @@ const Navbar = () => {
   return (
     <div className="w-screen h-20px flex justify-between items-center px-10 py-3 border-b-2">
       <Link to="/blogs">
-        <div className="text-xl">Medium</div>
+        <div className="text-xl">BlogSphere</div>
       </Link>
         <div className="flex flex-row  justify-center  items-center gap-2">
               <div className="mt-2">
